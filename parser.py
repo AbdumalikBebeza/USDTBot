@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as BS
 import requests
 from pprint import pprint
 
-URL = "https://www.binance.com/ru/price/tether"
+URL = "https://www.binance.com/en-GB/price/tether"
 
 HEADERS = {
     'Auser_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -24,10 +24,10 @@ def get_url(url, params=''):
 
 def get_data(html):
     soup = BS(html, "html.parser")
-    item = soup.find("div", class_="css-1267ixm")
-    # pprint(items)
+    item = soup.find("div", class_="css-3j2kqe")
+    # print(item)
 
-    usdt_price = item.find("div", class_="css-12ujz79").getText().split(" ")
+    usdt_price = item.find("div", class_="css-dbxihu").getText().split(" ")
 
     return usdt_price
 
@@ -39,7 +39,6 @@ def parser():
         return data
     except AttributeError:
         return None
-
 
 
 

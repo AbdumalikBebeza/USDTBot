@@ -4,6 +4,8 @@ from config import bot, dispatcher, ADMINS
 from parser import parser
 import logging
 
+from utils import remove_char_at
+
 curs = 0
 comsa = 0
 
@@ -36,8 +38,8 @@ async def set_comsa_and_curs(message: types.Message):
 @dispatcher.message_handler(commands=['price'])
 async def get_litecoin_price(message: types.Message):
     usdt_price = parser()
-    if usdt_price is not None and usdt_price[0] == '$':
-        await message.reply(f"Текущая цена USDT.: ${usdt_price[1]}")
+    if usdt_price is not None and usdt_price[0] == 'USD':
+        await message.reply(f"Текущая цена USDT : {usdt_price[1]}")
     else:
         await message.reply("Не удалось получить цену Litecoin. Пожалуйста, попробуйте позже.")
 
@@ -47,8 +49,9 @@ async def convert_to_usd(message: types.Message):
     try:
         usdt_amount = float(message.text)
         usdt_price = parser()
-        if usdt_price is not None and usdt_price[0] == '$':
-            usd_value = int(usdt_amount * float(usdt_price[1]) * curs) + comsa
+        if usdt_price is not None and usdt_price[0] == 'USD':
+            u = float(remove_char_at(0, usdt_price[1]))
+            usd_value = int(usdt_amount * float(u) * curs) + comsa
             await message.reply(f"{usd_value:,}")
         else:
             await message.reply("Не удалось получить цену USDT. Пожалуйста, попробуйте снова позже.")
